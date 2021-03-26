@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-	baseURL: "http://www.omdbapi.com"
+	baseURL: "http://127.0.0.1:8000/api/"
 });
 
 instance.defaults.headers.post['Accept'] = "application/json";

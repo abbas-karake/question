@@ -9,14 +9,13 @@ const CardList = (props) => {
 		return null;
 
 	return (
-		<Grid data-test="cardListContainer" container spacing={3}>
+		<Grid data-test="cardListContainer" container spacing={2}>
 			{props.listData.map(item => {
 				return (
-					<Grid key={item.imdbID} item xs={12} sm={6} md={4} lg={3}>
+					<Grid key={item.id} item xs={12} sm={12} md={12} lg={12}>
 						<Card 
-							onClick={() => props.cardClickFunc(item.imdbID)}
-							src={item.Poster}
-							title={item.Title} />
+							onClick={() => props.cardClickFunc(item.id)}
+							title={item.text} />
 					</Grid>
 				)
 			})}
@@ -27,8 +26,6 @@ const CardList = (props) => {
 CardList.propTypes = {
     cardClickFunc: PropTypes.func,
     listData: PropTypes.arrayOf(PropTypes.shape({
-        imdbID: PropTypes.string.isRequired,
-        Poster: PropTypes.string,
         Title: PropTypes.string
     }))
 }

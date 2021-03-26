@@ -2,25 +2,43 @@ import axios from './axios';
 
 
 
-export function sendRequest(data) {
+export function sendRequest(link, data, headers = {}, method = "POST") {
 
-	// let params = {...data, apikey: "723257b5"}; // this will cause an error in edge and IE
-    let params = Object.assign({}, data);
-    params['apikey'] = "723257b5";
+    let contentType = "application/json";
+    if (data instanceof FormData) {
+        contentType = "multipart/form-data";
+    }
 
-    return axios.get("", {params: params}).then((response) => {
+    headers = {
+        ...headers,
+        // "Authorization": "Bearer " + getCookie("token"),
+        "content-type": contentType,
+    };
+
+    let axiosInst = null;
+    if (method === "POST") {
+        axiosInst = axios.post(link, data, { headers: headers });
+    } else {
+        axiosInst = axios.get(link, { headers: headers });
+    }
+
+    return axiosInst.then((response) => {
 
     	let MsgResponse = "Error please try again later";
-        if(!(typeof(response.data.Response) === "undefined") && response.data.Response === "True") {
-        	return {
-                error: false,
-                data: response.data
+
+        if (typeof response.data !== "undefined") {
+            if (typeof response.data.statusCode !== "undefined") {
+                if (typeof response.data.statusCode.message !== "undefined")
+                    MsgResponse = response.data.statusCode.message;
+
+                if (typeof response.data.statusCode.code !== "undefined" && response.data.statusCode.code === 0) {
+                    return {
+                        error: false,
+                        data: response.data,
+                    };
+                }
             }
         }
-        else {
-			if(!(typeof(response.data.Error) === "undefined"))
-				MsgResponse = response.data.Error;
-		}
 
 		return {
 			error: true,

@@ -19,18 +19,12 @@ const useStyles = makeStyles((theme) => ({
 		flexDirection: 'column',
 		alignItems: 'flex-start',
     	justifyContent: 'flex-start'
-	},
-	media: {
-		width: '100%',
-		height: 140,
 	}
 }));
 
 
 const OneCard = (props) => {
   const classes = useStyles();
-  let [imageLoaded, setImageLoaded] = useState(false);
-  let imageSrc = (!props.src || props.src === "N/A") ? "/noimage.gif" : props.src;
   let title = props.title ? props.title : "";
 
   if(!props.onClick)
@@ -39,20 +33,6 @@ const OneCard = (props) => {
   return (
     <Card data-test="cardContainer" onClick={props.onClick} className={classes.root}>
       <CardActionArea className={classes.rootBotton}>
-  		<Skeleton
-  			style={imageLoaded ? {display: 'none'} : {}}
-  			animation="wave"
-  			variant="rect"
-  			className={classes.media} />
-  		<CardMedia 
-  			style={!imageLoaded ? {display: 'none'} : {}}
-        onLoad={() => setImageLoaded(true)}
-        component="img"
-        alt={title}
-        className={classes.media}
-        image={imageSrc}
-        title={title}
-        />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {title}
@@ -64,7 +44,6 @@ const OneCard = (props) => {
 }
 
 OneCard.propTypes = {
-    src: PropTypes.string,
     title: PropTypes.string,
     onClick: PropTypes.func
 }

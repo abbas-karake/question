@@ -3,7 +3,7 @@ import { SET_LOAD_DATA, SET_LOAD_DATA_SUCCESS, SET_LOAD_DATA_FAILED } from "../t
 import { sendRequest } from "../../utils/helpers";
 
 function* fetchData(action) {
-    const fetchedData = yield sendRequest("CmsGlobal/LoadData");
+    const fetchedData = yield sendRequest("question", {}, {}, "GET");
     if (!fetchedData.error) {
         yield put({ type: SET_LOAD_DATA_SUCCESS, payload: fetchedData.data });
     } else {

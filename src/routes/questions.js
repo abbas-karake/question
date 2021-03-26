@@ -11,8 +11,11 @@ import Image from '../components/common/image';
 import Toaster from '../components/common/toaster';
 import LoadingSkeletons from '../components/common/loadingSkeletons';
 
-import Search from '../components/common/inputs/search';
+import Text from '../components/common/inputs/text';
 import Select from '../components/common/inputs/select';
+import Button from '../components/common/inputs/button';
+
+
 import CardList from '../components/movies/cardList';
 
 import {sendRequest} from '../utils/helpers';
@@ -106,9 +109,9 @@ class Questions extends Component{
 		}
 	}
 
-	loadDataHandler = (imdbID) => {
+	loadDataHandler = (id) => {
 		this.setState({showModal: true, loadedData: null});
-		sendRequest({i: imdbID, plot: 'full', type: 'movie'}).then((response) => {
+		sendRequest({i: id, plot: 'full', type: 'movie'}).then((response) => {
 			if(!response.error) {
 
 				let loadedData = {
@@ -137,7 +140,6 @@ class Questions extends Component{
 	}
 	
 	render() {
-		console.log(this.props.questions);
 		return (
 			<Auxi>
 
@@ -151,13 +153,11 @@ class Questions extends Component{
 
 				{/* search part */}
 				<Formsy onSubmit={this.searchHandler} onValid={() => this.setState({valid: true})} onInvalid={() => this.setState({valid: false})}>
-					<Search
+					<Text
 						name="title"
 	            		validations={validations.title}
 	            		validationErrors={validationErrors.title}
-						validationError="This field is required" 
-						placeholder="Search"
-						required />
+						label="Search" />
 
 					<Select
                         dataListArray={QuestionTypes}
@@ -166,6 +166,11 @@ class Questions extends Component{
                         name="type"
                         label="Select Type"
                     />
+
+                    <Button
+                    	type="submit"
+                    	label="Search"
+                    	/>
 				</Formsy>
 				{/* search part */}
 
@@ -175,19 +180,19 @@ class Questions extends Component{
 
 
 				{/* data and paging part */}
-				{!this.state.loading && this.state.listData.length>0 &&
+				{!this.state.loading && this.props.questions.data.length>0 &&
 					<Auxi>
-						<CardList
-							listData={this.state.listData}
-							cardClickFunc={(imdbID) => this.loadDataHandler(imdbID)} />
+						{/*<CardList
+							listData={this.props.questions.data}
+							cardClickFunc={(id) => this.loadDataHandler(id)} />*/}
 
-						{this.state.pagingCount > 1 &&
+						{/*this.state.pagingCount > 1 &&
 							<Grid container justify="center" alignItems="center">
 								<Paging
 									count={this.state.pagingCount}
 									page={this.state.page}
 									handleChange={(event, value) => this.searchForMovieHandler(value, false)} />
-							</Grid>}
+							</Grid>*/}
 					</Auxi>
 				}
 				{/* data and paging part */}
